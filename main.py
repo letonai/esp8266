@@ -6,7 +6,7 @@ import time
 import sys
 
 REMOTE_REPO="https://raw.githubusercontent.com/letonai/esp8266/main/"
-LOCAL_VERSION="0.10"
+LOCAL_VERSION="0.11"
 
 def updateVersion():
   print("Starting update...")
@@ -45,6 +45,27 @@ def web_page():
   <p><a href="/?led=off"><button class="button button2">OFF</button></a></p></body></html>"""
   return html
 
+def webServer():
+  conn, addr = s.accept()
+  print('Got a connection from %s' % str(addr))
+  request = conn.recv(1024)
+  request = str(request)
+  print('Content = %s' % request)
+  led_on = request.find('/?led=on')
+  led_off = request.find('/?led=off')
+  if led_on == 6:
+      print('LED ON')
+      led.value(0)
+  if led_off == 6:
+      print('LED OFF')
+      led.value(1)
+  response = web_page()
+  conn.send('HTTP/1.1 200 OK\n')
+  conn.send('Content-Type: text/html\n')
+  conn.send('Connection: close\n\n')
+  conn.sendall(response)
+  conn.close()
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('0.0.0.0', 80))
 s.listen(5)
@@ -56,24 +77,7 @@ while True:
     os.remove(RESET_FILE)
     checkVersion()
   except OSError:  
-    conn, addr = s.accept()
-    print('Got a connection from %s' % str(addr))
-    request = conn.recv(1024)
-    request = str(request)
-    print('Content = %s' % request)
-    led_on = request.find('/?led=on')
-    led_off = request.find('/?led=off')
-    if led_on == 6:
-        print('LED ON')
-        led.value(0)
-    if led_off == 6:
-        print('LED OFF')
-        led.value(1)
-    response = web_page()
-    conn.send('HTTP/1.1 200 OK\n')
-    conn.send('Content-Type: text/html\n')
-    conn.send('Connection: close\n\n')
-    conn.sendall(response)
-    conn.close()
+    webServer()
+
 
     
