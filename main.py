@@ -2,9 +2,10 @@
 import machine
 import os
 import urequests
+import time
 
 REMOTE_REPO="https://raw.githubusercontent.com/letonai/esp8266/main/"
-LOCAL_VERSION="0.02"
+LOCAL_VERSION="0.04"
 
 def updateVersion():
   print("Starting update...")
@@ -15,7 +16,7 @@ def updateVersion():
   current_exec.flush()
   current_exec.close()
   print("Update Done, restarting...")
-  machine.reset()
+  time.sleep(5)
 
 def checkVersion():
   res = urequests.get(REMOTE_REPO+"version.current")
@@ -23,6 +24,8 @@ def checkVersion():
   if LOCAL_VERSION != remote_version:
     print("New Version found: "+remote_version)
     updateVersion()
+  else:
+    print("No updates found!")
 
 RESET_FILE = "reset.now"
 led = machine.Pin(1, machine.Pin.OUT)
@@ -51,29 +54,25 @@ while True:
     print("Reset found!")
     os.remove(RESET_FILE)
     checkVersion()
-    #machine.reset()
   except OSError:  
-    pass
-    # open failed
-   # handle the file open case
-    # conn, addr = s.accept()
-    # print('Got a connection from %s' % str(addr))
-    # request = conn.recv(1024)
-    # request = str(request)
-    # print('Content = %s' % request)
-    # led_on = request.find('/?led=on')
-    # led_off = request.find('/?led=off')
-    # if led_on == 6:
-    #     print('LED ON')
-    #     led.value(0)
-    # if led_off == 6:
-    #     print('LED OFF')
-    #     led.value(1)
-    # response = web_page()
-    # conn.send('HTTP/1.1 200 OK\n')
-    # conn.send('Content-Type: text/html\n')
-    # conn.send('Connection: close\n\n')
-    # conn.sendall(response)
-    # conn.close()
+    conn, addr = s.accept()
+    print('Got a connection from %s' % str(addr))
+    request = conn.recv(1024)
+    request = str(request)
+    print('Content = %s' % request)
+    led_on = request.find('/?led=on')
+    led_off = request.find('/?led=off')
+    if led_on == 6:
+        print('LED ON')
+        led.value(0)
+    if led_off == 6:
+        print('LED OFF')
+        led.value(1)
+    response = web_page()
+    conn.send('HTTP/1.1 200 OK\n')
+    conn.send('Content-Type: text/html\n')
+    conn.send('Connection: close\n\n')
+    conn.sendall(response)
+    conn.close()
 
     
