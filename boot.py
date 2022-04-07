@@ -13,12 +13,12 @@ import esp
 esp.osdebug(None)
 gc.collect()
 
-ssid = 'Bella'
-password = 'BellaGatoSemVergonha'
+ssid = ''
+password = ''
 
 
 nic = network.WLAN(network.STA_IF)
 nic.active(True)
-nic.connect('Bella', 'BellaGatoSemVergonha')
+nic.connect(ssid, password)
 
 webrepl.start()
