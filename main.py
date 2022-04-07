@@ -3,6 +3,7 @@ import machine
 import os
 import urequests
 import time
+import sys
 
 REMOTE_REPO="https://raw.githubusercontent.com/letonai/esp8266/main/"
 LOCAL_VERSION="0.06"
@@ -16,6 +17,7 @@ def updateVersion():
   current_exec.flush()
   current_exec.close()
   print("Update Done, restarting...")
+  sys.exit()
 
 def checkVersion():
   res = urequests.get(REMOTE_REPO+"version.current")
