@@ -11,7 +11,7 @@ def updateVersion():
   res = urequests.get(REMOTE_REPO+"main.py")
   new_exec=res.text
   current_exec = open("main.py", "w")
-  current_exec.write()
+  current_exec.write(new_exec)
   current_exec.flush()
   current_exec.close()
   print("Update Done, restarting...")
