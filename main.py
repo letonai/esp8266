@@ -6,7 +6,7 @@ import time
 import sys
 
 REMOTE_REPO="https://raw.githubusercontent.com/letonai/esp8266/main/"
-LOCAL_VERSION="0.06"
+LOCAL_VERSION="0.07"
 
 def updateVersion():
   print("Starting update...")
