@@ -9,6 +9,8 @@ import gc
 import webrepl
 import network
 import esp
+import urequests
+
 
 esp.osdebug(None)
 gc.collect()
@@ -20,5 +22,6 @@ password = ''
 nic = network.WLAN(network.STA_IF)
 nic.active(True)
 nic.connect(ssid, password)
+
 
 webrepl.start()
