@@ -5,7 +5,7 @@ import urequests
 import time
 
 REMOTE_REPO="https://raw.githubusercontent.com/letonai/esp8266/main/"
-LOCAL_VERSION="0.05"
+LOCAL_VERSION="0.06"
 
 def updateVersion():
   print("Starting update...")
