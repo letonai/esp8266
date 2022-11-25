@@ -44,30 +44,31 @@ def checkVersion():
     print("No updates found!")
 
 while True:
-  try:
-    f = open(RESET_FILE, "r")
-    print("Reset found!")
-    os.remove(RESET_FILE)
-    checkVersion()
-  except OSError:  
-    print("Error...")
-  gc.collect()
-  oled.fill(0)
   if nic.isconnected():
+    oled.fill(0)
     oled.text('Connected...', 0, 0)
+    oled.show()
+    try:
+      f = open(RESET_FILE, "r")
+      print("Reset found!")
+      os.remove(RESET_FILE)
+      checkVersion()
+    except OSError:  
+      print("Error...")
+    gc.collect()
+    
+    try:
+      oled.text('Getting rates..', 0, 0)
+      res = urequests.get(EXCHANGE_URL)
+      oled.text("DOLAR: "+str(res.json()['rates']['BRL']), 0, 20)
+      oled.text('Connected...', 0, 0)
+    except:
+      oled.text("ERROR",0,20)
+      oled.show()
   else:
     oled.text('DISCONNECTED...', 0, 0)
   oled.show()
-  time.sleep(1)
-  try:
-    oled.text('Getting rates..', 0, 0)
-    res = urequests.get(EXCHANGE_URL)
-    oled.text("DOLAR: "+str(res.json()['rates']['BRL']), 0, 20)
-    oled.text('Connected...', 0, 0)
-  except:
-   oled.text("ERROR",0,20)
-   oled.show()
-   time.sleep(10)
+  time.sleep(10)
   gc.collect()
     
 
