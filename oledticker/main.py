@@ -68,6 +68,7 @@ while True:
       oled.show()
   else:
     oled.text('DISCONNECTED...', 0, 0)
+  oled.text(str(LOCAL_VERSION),0,60)
   oled.show()
   time.sleep(10)
   gc.collect()
