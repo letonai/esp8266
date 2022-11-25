@@ -60,7 +60,7 @@ while True:
     try:
       oled.text('Getting rates..', 0, 0)
       res = urequests.get(EXCHANGE_URL)
-      oled.text("DOLAR: "+str(res.json()['rates']['BRL']), 0, 20)
+      oled.text("DOLAR: "+str(res.json()['rates']['BRL']), 0, 40)
       oled.text('Connected...', 0, 0)
     except:
       oled.text("ERROR",0,20)
