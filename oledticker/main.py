@@ -54,15 +54,6 @@ while True:
     oled.fill(0)
     oled.text('Connected...', 0, 0)
     oled.show()
-    # try:
-    #   f = open(RESET_FILE, "r")
-    #   print("Reset found!")
-    #   os.remove(RESET_FILE)
-    #   checkVersion()
-    # except OSError:  
-    #   print("Error...")
-    # gc.collect()
-    
     try:
       oled.text('Getting rates..', 0, 0)
       res = urequests.get(EXCHANGE_URL)
