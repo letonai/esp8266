@@ -11,7 +11,7 @@ import network
 nic = network.WLAN(network.STA_IF)
 REMOTE_REPO="https://raw.githubusercontent.com/letonai/esp8266/main/oledticker/"
 EXCHANGE_URL="https://openexchangerates.org/api/latest.json?app_id=f18ac4164bcc42b08dd0bb833fcdb068&base=USD&symbols=BRL&prettyprint=false&show_alternative=false"
-LOCAL_VERSION="0.092"
+LOCAL_VERSION="0.093"
 RESET_FILE = "reset.now"
 i2c = I2C(scl=Pin(0), sda=Pin( 2))
 oled = SSD1306_I2C(128, 64, i2c)
@@ -42,12 +42,14 @@ def checkVersion():
     updateVersion()
   else:
     print("No updates found!")
-    
+
+secscount=0
 while not nic.isconnected():
     oled.fill(0)
-    oled.text('Connecting...', 0, 0)
+    oled.text('Connecting... '+secscount, 0, 0)
+    secscount=secscount+1
     oled.show()
-    time.sleep(5)
+    time.sleep(1)
     
 if nic.isconnected():
   checkVersion()
