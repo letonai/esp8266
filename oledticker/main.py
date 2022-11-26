@@ -37,6 +37,7 @@ def checkVersion():
   oled.show()
   res = urequests.get(REMOTE_REPO+"version.current")
   remote_version = res.text
+  oled.text('Remote: '+str(remote_version), 30, 10)
   if LOCAL_VERSION != remote_version:
     oled.fill(0)
     oled.text('New Version...'+str(remote_version), 30, 10)
