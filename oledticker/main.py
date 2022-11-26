@@ -41,6 +41,7 @@ def checkVersion():
     updateVersion()
   else:
     print("No updates found!")
+
 oled.text('Connecting...', 0, 0)
 oled.show()
 time.sleep(10)
@@ -71,7 +72,7 @@ while True:
       oled.show()
   else:
     oled.text('DISCONNECTED...', 0, 0)
-  oled.text(str(LOCAL_VERSION),0,60)
+  oled.text(str(LOCAL_VERSION),0,50)
   oled.show()
   time.sleep(10)
   gc.collect()
