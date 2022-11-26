@@ -26,6 +26,7 @@ def updateVersion():
   current_exec.close()
   oled.fill(0)
   oled.text("Update Done, restarting...",0,10)
+  oled.text("Version:"+LOCAL_VERSION,0,20)
   oled.show()
   time.sleep(2)
   machine.reset()
@@ -45,8 +46,8 @@ def checkVersion():
 oled.text('Connecting...', 0, 0)
 oled.show()
 time.sleep(10)
-if nic.isconnected():
-  checkVersion()
+#if nic.isconnected():
+#  checkVersion()
 
 while True:
   if nic.isconnected():
