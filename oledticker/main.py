@@ -11,7 +11,7 @@ import network
 nic = network.WLAN(network.STA_IF)
 REMOTE_REPO="https://raw.githubusercontent.com/letonai/esp8266/main/oledticker/"
 EXCHANGE_URL="https://openexchangerates.org/api/latest.json?app_id=f18ac4164bcc42b08dd0bb833fcdb068&base=USD&symbols=BRL&prettyprint=false&show_alternative=false"
-LOCAL_VERSION="0.093"
+LOCAL_VERSION="0.094"
 RESET_FILE = "reset.now"
 i2c = I2C(scl=Pin(0), sda=Pin( 2))
 oled = SSD1306_I2C(128, 64, i2c)
@@ -32,27 +32,32 @@ def updateVersion():
   machine.reset()
 
 def checkVersion():
+  oled.fill(0)
+  oled.text('Checkin...', 30, 10)
+  oled.show()
   res = urequests.get(REMOTE_REPO+"version.current")
   remote_version = res.text
   if LOCAL_VERSION != remote_version:
     oled.fill(0)
-    oled.text('New Version...'+str(remote_version), 0, 0)
-    oled.text('Updating...', 30, 10)
+    oled.text('New Version...'+str(remote_version), 30, 10)
+    oled.text('Updating...', 30, 25)
     oled.show()
     updateVersion()
   else:
-    print("No updates found!")
+    oled.fill(0)
+    oled.text("No updates found!", 30, 10)
+    oled.show()
+    time.sleep(2)
 
 secscount=0
 while not nic.isconnected():
     oled.fill(0)
-    oled.text('Connecting... '+secscount, 0, 0)
+    oled.text('Connecting... '+str(secscount), 0, 0)
     secscount=secscount+1
-    oled.show()
+    oled.show() 
     time.sleep(1)
     
-if nic.isconnected():
-  checkVersion()
+checkVersion()
 
 while True:
   oled.fill(0)
@@ -60,6 +65,7 @@ while True:
     oled.text('Connected...', 0, 0)
     oled.show()
     try:
+      oled.fill(0)
       oled.text('Getting rates..', 0, 0)
       res = urequests.get(EXCHANGE_URL)
       oled.text("DOLAR: "+str(res.json()['rates']['BRL']), 0, 20)
